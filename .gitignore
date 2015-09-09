@@ -32,3 +32,5 @@ proguard/
 *.iml
 keys.gradle
 *.keystore
+
+.DS_Store
