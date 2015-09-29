@@ -34,3 +34,5 @@ keys.gradle
 *.keystore
 
 .DS_Store
+
+app/google-services.json

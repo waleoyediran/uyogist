@@ -1,4 +1,4 @@
-package com.uyogist.uyogist;
+package com.uyogist.uyogist.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -20,6 +20,9 @@ public class Gist {
 
     @SerializedName("added_by")
     private String author;
+
+    @SerializedName("image")
+    private String imageUrl;
 
     public String getKey() {
         return key;
@@ -51,6 +54,14 @@ public class Gist {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     /**

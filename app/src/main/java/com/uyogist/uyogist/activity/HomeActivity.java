@@ -1,4 +1,4 @@
-package com.uyogist.uyogist;
+package com.uyogist.uyogist.activity;
 
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,6 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.uyogist.uyogist.fragment.CreateGistDialogFragment;
+import com.uyogist.uyogist.adapter.GistAdapter;
+import com.uyogist.uyogist.R;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -55,7 +59,7 @@ public class HomeActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(new GistAdapter(HomeActivity.this));
+        mRecyclerView.setAdapter(new GistAdapter(HomeActivity.this, loadingView));
         setSupportActionBar(mToolbar);
         setUpNavDrawer();
     }

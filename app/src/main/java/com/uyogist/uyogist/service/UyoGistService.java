@@ -1,12 +1,15 @@
 package com.uyogist.uyogist.service;
 
-import com.uyogist.uyogist.Gist;
+import com.uyogist.uyogist.model.Gist;
 
 import java.util.List;
 
-import retrofit.Call;
 import retrofit.Callback;
 import retrofit.http.GET;
+import retrofit.http.Multipart;
+import retrofit.http.POST;
+import retrofit.http.Part;
+import retrofit.mime.TypedFile;
 
 /**
  * API Service
@@ -15,5 +18,9 @@ import retrofit.http.GET;
 public interface UyoGistService {
 
     @GET("/api/gist")
-    Call<List<Gist>> getGists();
+    void getGists(Callback<List<Gist>> callback);
+
+    @Multipart
+    @POST("/api/gist")
+    void postGist(@Part("img")TypedFile photo, @Part("nick")String author, @Part("gist")String gist, Callback<Gist> callback);
 }

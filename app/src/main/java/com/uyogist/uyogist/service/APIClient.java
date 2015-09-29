@@ -2,10 +2,16 @@ package com.uyogist.uyogist.service;
 
 import android.content.Context;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.internal.bind.DateTypeAdapter;
 import com.uyogist.uyogist.R;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import java.util.Date;
+
+import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 
 /**
  * API Client Class
@@ -23,12 +29,19 @@ public class APIClient {
         if (uyoGistService != null){
             return uyoGistService;
         }
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(context.getString(R.string.base_url))
-                .addConverterFactory(GsonConverterFactory.create())
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                .create();
+
+
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(context.getString(R.string.base_url))
+                .setConverter(new GsonConverter(gson))
                 .build();
 
-        uyoGistService = retrofit.create(UyoGistService.class);
+        uyoGistService = restAdapter.create(UyoGistService.class);
+
         return uyoGistService;
     }
 }
