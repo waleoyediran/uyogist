@@ -1,4 +1,4 @@
-package com.uyogist.uyogist;
+package com.uyogist.uyogist.util;
 
 import android.os.Environment;
 
@@ -11,6 +11,8 @@ import java.io.File;
 public final class Constants {
 
     public static final boolean DEBUG = true;
+    public static final String PREFS_IS_SIGNED_IN = "isSignedIn";
+    public static final String PREFS_NAME = "uyo_gist";
 
     public static final class FOLDERS {
 

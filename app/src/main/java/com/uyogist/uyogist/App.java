@@ -1,4 +1,4 @@
-package com.uyogist.uyogist.util;
+package com.uyogist.uyogist;
 
 import android.app.Application;
 

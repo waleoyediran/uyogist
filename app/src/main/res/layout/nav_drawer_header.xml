@@ -7,48 +7,29 @@
     android:weightSum="1">
 
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="vertical"
-        android:layout_marginLeft="@dimen/dimen_16dp"
-        android:layout_marginStart="@dimen/dimen_16dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:text="@string/test_name"
-            android:textSize="18sp"
-            android:textStyle="bold"
-
-            />
-
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#fcfcfc"
-            android:layout_marginTop="5dp"
-            android:text="@string/test_email"
-            android:textSize="14sp"
-            android:textStyle="normal"
-
-            />
-    </LinearLayout>
-
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
+        android:id="@+id/picture"
+        android:src="@drawable/profile_pic"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:paddingBottom="8dp"
+        android:layout_alignLeft="@+id/name"
+        android:layout_alignStart="@+id/name"
+        android:layout_above="@id/name"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:text="@string/test_name"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:layout_marginLeft="@dimen/dimen_16dp"
         android:layout_marginStart="@dimen/dimen_16dp"
-        android:layout_marginTop="38dp"
-        android:id="@+id/circleView"
-        />
+        android:layout_marginBottom="@dimen/dimen_16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

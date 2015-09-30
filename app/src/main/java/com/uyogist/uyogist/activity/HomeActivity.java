@@ -1,12 +1,13 @@
 package com.uyogist.uyogist.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,12 +15,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
+import com.squareup.picasso.Picasso;
+import com.uyogist.uyogist.util.CircularImageTransformation;
+import com.uyogist.uyogist.util.Constants;
 import com.uyogist.uyogist.fragment.CreateGistDialogFragment;
 import com.uyogist.uyogist.adapter.GistAdapter;
 import com.uyogist.uyogist.R;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends GoogleAPIBaseActivity {
 
     private Toolbar mToolbar;
     private NavigationView navigationView;
@@ -27,10 +36,22 @@ public class HomeActivity extends AppCompatActivity {
     private View loadingView;
     private RecyclerView mRecyclerView;
     private FloatingActionButton fab;
+    private TextView mNameText;
+    private ImageView mProfileImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //check if user is Logged in
+        SharedPreferences settings = getSharedPreferences(
+                Constants.PREFS_NAME, 0);
+        boolean isSignedIn = settings.getBoolean(Constants.PREFS_IS_SIGNED_IN, false);
+        if (!isSignedIn){
+            backToLogin();
+            return;
+        }
+
         setContentView(R.layout.activity_home);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
@@ -40,6 +61,8 @@ public class HomeActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        mNameText = (TextView) findViewById(R.id.name);
+        mProfileImageView = (ImageView) findViewById(R.id.picture);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +85,43 @@ public class HomeActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(new GistAdapter(HomeActivity.this, loadingView));
         setSupportActionBar(mToolbar);
         setUpNavDrawer();
+        createGPlusClient();
+    }
+
+    private void backToLogin() {
+        Intent i = new Intent(this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+        finish();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        super.onConnected(bundle);
+
+        /* This Line is the key */
+//        Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(this);
+
+        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            String personName = currentPerson.getDisplayName();
+            String personPhoto = currentPerson.getImage().getUrl();
+
+            mNameText.setText(personName);
+            Picasso.with(this)
+                    .load(personPhoto)
+                    .resize(100, 100)
+                    .centerCrop()
+                    .transform(new CircularImageTransformation(50))
+                    .into(mProfileImageView);
+            // Update Drawer
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        super.onConnectionFailed(connectionResult);
+        backToLogin();
     }
 
     private void setUpNavDrawer() {
@@ -109,7 +169,13 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            SharedPreferences.Editor editor = getSharedPreferences(
+                    Constants.PREFS_NAME, 0).edit();
+            editor.putBoolean(Constants.PREFS_IS_SIGNED_IN, false);
+            editor.apply();
+            logOut();
+            backToLogin();
             return true;
         }
 
