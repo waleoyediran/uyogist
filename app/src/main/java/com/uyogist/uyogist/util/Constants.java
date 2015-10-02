@@ -13,6 +13,7 @@ public final class Constants {
     public static final boolean DEBUG = true;
     public static final String PREFS_IS_SIGNED_IN = "isSignedIn";
     public static final String PREFS_NAME = "uyo_gist";
+    public static final String PROFILE_NAME = "profileName";
 
     public static final class FOLDERS {
 

@@ -24,6 +24,7 @@ import com.uyogist.uyogist.model.Gist;
 import com.uyogist.uyogist.R;
 import com.uyogist.uyogist.service.APIClient;
 import com.uyogist.uyogist.service.UyoGistService;
+import com.uyogist.uyogist.util.Constants;
 
 import java.io.File;
 
@@ -50,11 +51,21 @@ public class CreateGistDialogFragment extends DialogFragment implements ImageCho
     private View postingProgressView;
     private View rootView;
 
+    private String mName;
+
 
     // Empty constructor required for DialogFragment
     public CreateGistDialogFragment() {
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null){
+            Bundle bundle = getArguments();
+            mName = bundle.getString(Constants.PROFILE_NAME);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,18 +108,17 @@ public class CreateGistDialogFragment extends DialogFragment implements ImageCho
 
 
     private void postGist() {
+        if (mGistText.getText().toString().trim().length() == 0){
+            return;
+        }
+
         UyoGistService service = APIClient.getUyoGistAPIService(getActivity());
         GistCallback callback = new GistCallback();
         postingProgressView.setVisibility(View.VISIBLE);
 
-//        File imageFile = null;
-//        if (imagePath != null){
-//            imageFile = new File(imagePath);
-////            TypedFile typedImage = new TypedFile("application/octet-stream", photo);
-//        }
         TypedFile file = new TypedFile("image/*", new File(imagePath));
-//        RequestBody file = RequestBody.create(MediaType.parse("image/*"), imagePath);
-        service.postGist(file, "author", "Test Gist", callback);
+
+        service.postGist(file, mName, mGistText.getText().toString(), callback);
     }
 
     private class GistCallback implements Callback<Gist> {

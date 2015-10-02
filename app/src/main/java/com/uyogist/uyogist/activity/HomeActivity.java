@@ -39,6 +39,8 @@ public class HomeActivity extends GoogleAPIBaseActivity {
     private TextView mNameText;
     private ImageView mProfileImageView;
 
+    private String mName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +75,12 @@ public class HomeActivity extends GoogleAPIBaseActivity {
                 if (frag != null) {
                     manager.beginTransaction().remove(frag).commit();
                 }
+
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.PROFILE_NAME, mName);
+
                 CreateGistDialogFragment alertDialogFragment = new CreateGistDialogFragment();
+                alertDialogFragment.setArguments(bundle);
                 alertDialogFragment.show(manager, "fragment_camera");
             }
         });
@@ -99,14 +106,13 @@ public class HomeActivity extends GoogleAPIBaseActivity {
     public void onConnected(Bundle bundle) {
         super.onConnected(bundle);
 
-        /* This Line is the key */
-//        Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(this);
-
         if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
             Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
             String personName = currentPerson.getDisplayName();
             String personPhoto = currentPerson.getImage().getUrl();
+            mName = personName;
 
+            // Update Drawer
             mNameText.setText(personName);
             Picasso.with(this)
                     .load(personPhoto)
@@ -114,7 +120,6 @@ public class HomeActivity extends GoogleAPIBaseActivity {
                     .centerCrop()
                     .transform(new CircularImageTransformation(50))
                     .into(mProfileImageView);
-            // Update Drawer
         }
     }
 
