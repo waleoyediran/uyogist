@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,7 +29,8 @@ import com.uyogist.uyogist.fragment.CreateGistDialogFragment;
 import com.uyogist.uyogist.adapter.GistAdapter;
 import com.uyogist.uyogist.R;
 
-public class HomeActivity extends GoogleAPIBaseActivity {
+//TODO: Extend the GoogleAPIBaseActivity
+public class HomeActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private NavigationView navigationView;
@@ -39,7 +41,7 @@ public class HomeActivity extends GoogleAPIBaseActivity {
     private TextView mNameText;
     private ImageView mProfileImageView;
 
-    private String mName;
+    private String mName = "Anonymous";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +94,8 @@ public class HomeActivity extends GoogleAPIBaseActivity {
         mRecyclerView.setAdapter(new GistAdapter(HomeActivity.this, loadingView));
         setSupportActionBar(mToolbar);
         setUpNavDrawer();
-        createGPlusClient();
+
+        //TODO: Create a GooglePlus API client to allow us get the user's profile information
     }
 
     private void backToLogin() {
@@ -102,32 +105,13 @@ public class HomeActivity extends GoogleAPIBaseActivity {
         finish();
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        super.onConnected(bundle);
+    //TODO: Override the onConnected Method in the GoogleAPIBaseActivity class
+    // Retrieve the Profile name and photo and update the NavigationDrawer Header
 
-        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            String personName = currentPerson.getDisplayName();
-            String personPhoto = currentPerson.getImage().getUrl();
-            mName = personName;
 
-            // Update Drawer
-            mNameText.setText(personName);
-            Picasso.with(this)
-                    .load(personPhoto)
-                    .resize(100, 100)
-                    .centerCrop()
-                    .transform(new CircularImageTransformation(50))
-                    .into(mProfileImageView);
-        }
-    }
+    //TODO: Override the onConnectionFailed method in the GoogleAPIBaseActivity class
+    // send the user back to the Login page (backToLogin()) if the user is not signed in
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        super.onConnectionFailed(connectionResult);
-        backToLogin();
-    }
 
     private void setUpNavDrawer() {
         if (mToolbar != null) {
@@ -179,7 +163,9 @@ public class HomeActivity extends GoogleAPIBaseActivity {
                     Constants.PREFS_NAME, 0).edit();
             editor.putBoolean(Constants.PREFS_IS_SIGNED_IN, false);
             editor.apply();
-            logOut();
+
+            //TODO: Log the user out of the GooglePlus client
+
             backToLogin();
             return true;
         }

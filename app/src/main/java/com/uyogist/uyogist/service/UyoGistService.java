@@ -17,10 +17,9 @@ import retrofit.mime.TypedFile;
  */
 public interface UyoGistService {
 
-    @GET("/api/gist")
-    void getGists(Callback<List<Gist>> callback);
+    //TODO: Declare async method to retrieve gists from server
 
-    @Multipart
-    @POST("/api/gist")
-    void postGist(@Part("img")TypedFile photo, @Part("nick")String author, @Part("gist")String gist, Callback<Gist> callback);
+
+    //TODO: Declare async method to post gist to server
+
 }

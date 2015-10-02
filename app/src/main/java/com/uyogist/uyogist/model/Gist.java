@@ -3,6 +3,7 @@ package com.uyogist.uyogist.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,7 +73,11 @@ public class Gist {
     public static List<Gist> getDummyGists(int count) {
         List<Gist> gists = new ArrayList<>();
         for (int i=0; i<count; i++){
-            gists.add(new Gist());
+            Gist gist = new Gist();
+            gist.setAuthor("John Doe");
+            gist.setGist("Hello World");
+            gist.setCreatedAt(new Date().getTime()/1000);
+            gists.add(gist);
         }
         return gists;
     }

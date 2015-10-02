@@ -114,7 +114,7 @@ public class GoogleAPIBaseActivity extends AppCompatActivity implements
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API)
-                .addScope(new Scope(Scopes.PROFILE))
+                //TODO: Add the Google+ Scope you require (PROFILE)
                 .build();
     }
 

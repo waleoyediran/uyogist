@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -21,7 +22,7 @@ import com.uyogist.uyogist.R;
  * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
  * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
  */
-public class LoginActivity extends GoogleAPIBaseActivity implements
+public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     private View mProgressView;
@@ -34,15 +35,15 @@ public class LoginActivity extends GoogleAPIBaseActivity implements
 
         // Find the Google+ sign in button.
         mPlusSignInButton = (SignInButton) findViewById(R.id.plus_sign_in_button);
-        if (supportsGooglePlayServices()) {
-            // Set a listener to connect the user when the G+ button is clicked.
-            mPlusSignInButton.setOnClickListener(this);
-        } else {
-            // Tell the app to install Google Play Services
 
-        }
+        /**
+         * TODO: Check if the device has Google Play Services installed
+         * If installed, setClick Listener,
+         * if not, show a dialog asking the user to install GooglePlay services
+         */
+        mPlusSignInButton.setOnClickListener(this);
 
-        createGPlusClient();
+        //TODO: Create GPlus Client
 
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -63,17 +64,11 @@ public class LoginActivity extends GoogleAPIBaseActivity implements
         finish();
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        super.onConnected(bundle);
-        login();
-    }
+    //TODO: Override onConnected, and log the user into the app (login())
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        super.onConnectionFailed(connectionResult);
-        mProgressView.setVisibility(View.INVISIBLE);
-    }
+
+    //TODO: Override onConnectionFailed, hide the progressBar and show ar error message
+
 
     @Override
     public void onClick(View v) {
@@ -83,14 +78,26 @@ public class LoginActivity extends GoogleAPIBaseActivity implements
     }
 
     private void onSignInClicked() {
+        // Show a message to the user that we are signing in.
         mProgressView.setVisibility(View.VISIBLE);
         // User clicked the sign-in button, so begin the sign-in process and automatically
         // attempt to resolve any errors that occur.
-        mShouldResolve = true;
-        mGoogleApiClient.connect();
+        //mShouldResolve = true;//TODO: uncomment this line to allow GooglePlay Services resolve errors
 
-        // Show a message to the user that we are signing in.
-//        mStatus.setText(R.string.signing_in);
+        // TODO: Remove the block below and Connect the GPlusAPI client
+        // To allow GPlus authentication
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                login();
+            }
+        }).start();
+
     }
 
 }

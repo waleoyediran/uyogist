@@ -112,39 +112,10 @@ public class CreateGistDialogFragment extends DialogFragment implements ImageCho
             return;
         }
 
-        UyoGistService service = APIClient.getUyoGistAPIService(getActivity());
-        GistCallback callback = new GistCallback();
-        postingProgressView.setVisibility(View.VISIBLE);
-
-        TypedFile file = new TypedFile("image/*", new File(imagePath));
-
-        service.postGist(file, mName, mGistText.getText().toString(), callback);
+        //TODO: Create POST Request and Post Gist to Server
     }
 
-    private class GistCallback implements Callback<Gist> {
 
-        @Override
-        public void success(Gist gist, Response response) {
-            Log.d(TAG, "success");
-            postingProgressView.setVisibility(View.GONE);
-            Snackbar snackbar = Snackbar.make(rootView, "Success, Gist Posted", Snackbar.LENGTH_SHORT);
-            snackbar.setCallback(new Snackbar.Callback() {
-                @Override
-                public void onDismissed(Snackbar snackbar, int event) {
-                    super.onDismissed(snackbar, event);
-                    CreateGistDialogFragment.this.dismiss();
-                }
-            });
-            snackbar.show();
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            Log.e(TAG, error.getMessage());
-            postingProgressView.setVisibility(View.GONE);
-            Snackbar.make(rootView, "Error: " + error.getMessage(), Snackbar.LENGTH_SHORT).show();
-        }
-    }
 
     private void selectPhoto() {
         chooserType = ChooserType.REQUEST_PICK_PICTURE;

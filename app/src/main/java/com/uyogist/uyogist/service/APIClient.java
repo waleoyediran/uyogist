@@ -29,18 +29,9 @@ public class APIClient {
         if (uyoGistService != null){
             return uyoGistService;
         }
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .registerTypeAdapter(Date.class, new DateTypeAdapter())
-                .create();
 
+        //TODO: Create Retrofit Adapter using a Gson Converter and assign to the Service
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(context.getString(R.string.base_url))
-                .setConverter(new GsonConverter(gson))
-                .build();
-
-        uyoGistService = restAdapter.create(UyoGistService.class);
 
         return uyoGistService;
     }

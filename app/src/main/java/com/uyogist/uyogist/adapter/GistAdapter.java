@@ -37,31 +37,16 @@ public class GistAdapter extends RecyclerView.Adapter<GistAdapter.ViewHolder> {
 
     SimpleDateFormat sdf;
 
-    public GistAdapter(Context context, View loadingView){
+    public GistAdapter(Context context, View loadingView) {
         mContext = context;
         sdf = new SimpleDateFormat("yyyy-M-dd");
         this.loadingView = loadingView;
         UyoGistService service = APIClient.getUyoGistAPIService(context);
-        GistCallback callback = new GistCallback();
-        loadingView.setVisibility(View.VISIBLE);
-        service.getGists(callback);
+
+        //TODO: Load Gist From Server
+        gists = Gist.getDummyGists(10);
     }
 
-    private class GistCallback implements Callback<List<Gist>> {
-
-        @Override
-        public void success(List<Gist> gistList, Response response) {
-            gists = gistList;
-            notifyDataSetChanged();
-            loadingView.setVisibility(View.GONE);
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            Log.e(TAG, error.getMessage());
-            loadingView.setVisibility(View.GONE);
-        }
-    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -109,11 +94,15 @@ public class GistAdapter extends RecyclerView.Adapter<GistAdapter.ViewHolder> {
             gistTextView.setText(gist.getGist());
             authorTextView.setText(gist.getAuthor());
             dateTextView.setText(sdf.format(new Date(gist.getCreatedAt() * 1000)));
-            Picasso.with(mContext)
-                    .load(gist.getImageUrl())
-                    .resize(150, 50)
-                    .centerCrop()
-                    .into(gistImageView);
+
+            if (gist.getImageUrl() != null){
+                Picasso.with(mContext)
+                        .load(gist.getImageUrl())
+                        .resize(150, 50)
+                        .centerCrop()
+                        .into(gistImageView);
+            }
+
 
             itemView.setOnClickListener(this);
         }
