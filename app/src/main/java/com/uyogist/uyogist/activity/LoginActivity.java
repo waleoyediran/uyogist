@@ -15,12 +15,12 @@ import com.uyogist.uyogist.R;
 
 
 /**
- * A login screen that offers login via email/password and via Google+ sign in.
+ * A login screen that offers login Google+ sign in.
  * <p/>
  * ************ IMPORTANT SETUP NOTES: ************
  * In order for Google+ sign in to work with your app, you must first go to:
- * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
- * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
+ * https://developers.google.com/identity/sign-in/android/start-integrating
+ * and follow the steps
  */
 public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener {
