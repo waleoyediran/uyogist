@@ -75,7 +75,7 @@ public class Gist {
         for (int i=0; i<count; i++){
             Gist gist = new Gist();
             gist.setAuthor("John Doe");
-            gist.setGist("Hello World");
+            gist.setGist("Its a bright and sunny day here in the peaceful city of Uyo");
             gist.setCreatedAt(new Date().getTime()/1000);
             gists.add(gist);
         }
